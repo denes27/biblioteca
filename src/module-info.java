@@ -1,10 +1,4 @@
-/**
- * 
- */
-/**
- * @author denes
- *
- */
-module biblioteca {
-	requires java.sql;
-}
+
+//module biblioteca {
+	//requires java.sql;
+//}

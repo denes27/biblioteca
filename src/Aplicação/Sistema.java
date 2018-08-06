@@ -5,18 +5,18 @@ import java.util.Scanner;
 
 public class Sistema {
 
-		public void Inicializacao(){
+		public static void Inicializacao(){
 			Scanner sc = new Scanner(System.in);
 			
 			System.out.println("Bem-vindo(a) ao sistema da Biblioteca!");
-			System.out.println("Você deseja: 1-Consultar, 2-Reservar, 3-Devolver?");
+			System.out.println("Você deseja: 1-Consultar, 2-Reservar, 3-Devolver, 4-Sair?");
 			//System.out.println("Fazer login como 'Usuário'(1) ou 'Funcionário'(2)?");
 			int opcao= sc.nextInt();
-			sc.close();
+			
 			filtarOpcao(opcao);
 		}
 		
-		public void filtarOpcao(int opcao) {
+		public static void filtarOpcao(int opcao) {
 			
 			Item item = new Item();
 			
@@ -37,13 +37,15 @@ public class Sistema {
 				}
 				break;
 			case 3:
-				Item.Devolver();
+				Item.Devolver(item);
 				break;
 			case 4:
 				System.out.println("Agradecemos a preferência! Tenha um bom dia!");
 				return;
 			default: 
-				System.out.println("Opção Inválida!");
+				System.out.println("Opção Inválida! Por favor, insira uma opção válida: ");
+				Scanner sc = new Scanner(System.in);
+				filtarOpcao(sc.nextInt());
 				break;
 			}
 		}
