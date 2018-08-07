@@ -1,12 +1,10 @@
-package dao;
+package entitys;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import Aplicação.Item;
 
 @Entity
 @Table(name="AcervoDB")
@@ -39,15 +37,18 @@ public class AcervoDB {
 		
 	}
 	
-	public AcervoDB(String tipo, String id, String nome, String genero, String numExemplares,
-					String exemplaresDisponiveis) {
-		
-	}
-	
-	public AcervoDB(String tipo, String id, String nome, String diretor, String genero, String ano, 
-					int numExemplares, int exemplaresDisponiveis) {
+	public AcervoDB(String tipo, String id, String nome, String diretor, String autor, String genero,
+					String editora, String ano, int numExemplares, int exemplaresDisponiveis) {
 		this._ano=ano;
-		this.
+		this._tipo=tipo;
+		this._id=id;
+		this._nome=nome;
+		this._diretor=diretor;
+		this._genero=genero;
+		this._numExemplares=numExemplares;
+		this._exemplaresDisponiveis= exemplaresDisponiveis;
+		this._autor=autor;
+		this._editora=editora;
 	}
 
  	public String get_autor() {
@@ -122,13 +123,15 @@ public class AcervoDB {
 	public void set_numExemplares(int _numExemplares) {
 		this._numExemplares = _numExemplares;
 	}
+	
+	public void set_exemplaresDisponiveis(int _exemplaresDisponiveis) {
+		this._exemplaresDisponiveis = _exemplaresDisponiveis;
+	}
 
-	public static int get_exemplaresDisponiveis() {
+	public int get_exemplaresDisponiveis() {
 		return _exemplaresDisponiveis;
 	}
 
-	public static void set_exemplaresDisponiveis(int _exemplaresDisponiveis) {
-		Item._exemplaresDisponiveis = _exemplaresDisponiveis;
-	}
+	
 
 }

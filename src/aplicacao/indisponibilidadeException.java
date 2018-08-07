@@ -1,4 +1,4 @@
-package Aplicação;
+package aplicacao;
 
 public class indisponibilidadeException extends Exception {
 
