@@ -2,63 +2,17 @@ package aplicacao;
 
 import java.util.Scanner;
 
-public class Item {
+import dao.LivroDao;
+import dao.DVDDao;
+import entitys.Item;
+import entitys.DVD;
+import entitys.Livro;
 
-	private String _nome, _genero, _id, _tipo;
-	private int  _numExemplares;
-	private static int _exemplaresDisponiveis;
-	
-	public String get_tipo() {
-		return _tipo;
-	}
-
-	public void set_tipo(String _tipo) {
-		this._tipo = _tipo;
-	}
-	
-	public String get_nome() {
-		return _nome;
-	}
-	
-
-	public void set_nome(String _nome) {
-		this._nome = _nome;
-	}
-
-	public String get_genero() {
-		return _genero;
-	}
-
-	public void set_genero(String _genero) {
-		this._genero = _genero;
-	}
-
-	public String get_id() {
-		return _id;
-	}
-
-	public void set_id(String _id) {
-		this._id = _id;
-	}
-
-	public int get_numExemplares() {
-		return _numExemplares;
-	}
-
-	public void set_numExemplares(int _numExemplares) {
-		this._numExemplares = _numExemplares;
-	}
-
-	public static int get_exemplaresDisponiveis() {
-		return _exemplaresDisponiveis;
-	}
-
-	public static void set_exemplaresDisponiveis(int _exemplaresDisponiveis) {
-		Item._exemplaresDisponiveis = _exemplaresDisponiveis;
-	}
+public class GerenciaItem {
 
 	public static void Consultar() {
 		filtrarOpcoesDeConsulta();
+		return;
 	}
 	
 	private static void filtrarOpcoesDeConsulta() {
@@ -78,11 +32,13 @@ public class Item {
 			filtrarOpcoesConsultaDVD();
 			break;
 		}
+		return;
 	}
 	
 	private static void filtrarOpcoesConsultaLivro() {
 		
 		Scanner sc = new Scanner(System.in);
+		LivroDao lDAO = new LivroDao();
 		
 		System.out.println("Selecione o filtro com que deseja fazer a busca: ");
 		System.out.println("1- procurar por nome;");
@@ -92,26 +48,27 @@ public class Item {
 		System.out.println("5- procurar pelo nome da editora;");
 				
 		int filtro = sc.nextInt();
-		Item itemConsultado=new Item();
+		Livro itemConsultado = new Livro();
 		
 		switch(filtro){
 			case 1:
+				Scanner n = new Scanner(System.in);
 				System.out.println("Insira o título do livro pelo qual deseja buscar: ");
-				String titulo = sc.nextLine();
-				//itemConsutado=PostgreDAO.consulta("Livro", "Título", titulo);
-				//validaConsultaLivro(item);
+				String titulo = n.nextLine();
+				itemConsultado=lDAO.findByNome(titulo);
+				validaConsultaLivro(itemConsultado);
 				break;
 			case 2:
 				System.out.println("Insira o genero do livro pelo qual deseja buscar: ");
 				String genero = sc.nextLine();
-				//itemConsutado=PostgreDAO.consulta("Livro", "Gênero", genero);
-				//validaConsultaLivro(item);
+				//itemConsultado=lDAO.findByGenero(titulo);
+				validaConsultaLivro(itemConsultado);
 				break;
 			case 3:
 				System.out.println("Insira o ID do livro pelo qual deseja buscar: ");
 				String id = sc.nextLine();
-				//itemConsutado=PostgreDAO.consulta("Livro", "ID", id);
-				//validaConsultaLivro(item);
+				itemConsultado=lDAO.findByID(id);
+				validaConsultaLivro(itemConsultado);
 				break;
 			case 4:
 				System.out.println("Insira o nome do autor do livro pelo qual deseja buscar: ");
@@ -135,6 +92,7 @@ public class Item {
 	private static void filtrarOpcoesConsultaDVD() {
 		
 		Scanner sc = new Scanner(System.in);
+		DVDDao dDAO = new DVDDao();
 		
 		System.out.println("Selecione o filtro com que deseja fazer a busca: ");
 		System.out.println("1- procurar por nome;");
@@ -144,18 +102,13 @@ public class Item {
 		System.out.println("5- procurar pelo nome do diretor;");
 		
 		int filtro = sc.nextInt();
-		
+		DVD itemConsultado = new DVD();
 		switch(filtro){
 			case 1:
 				System.out.println("Insira o título do DVD pelo qual deseja buscar: ");
 				String titulo = sc.nextLine();
-				//try{
-				//itemConsutado=PostgreDAO.consulta("DVD", "Titulo", titulo);
-				//} catch (itemInexistenteException) {
-				//		System.out.println("O item que você tentou consultar não existe no sistema!");
-				//		Consulta();
-				//}
-				//validaConsultaDVD(item);
+				itemConsultado = dDAO.findByNome(titulo);
+				validaConsultaDVD(itemConsultado);
 				break;
 			case 2:
 				System.out.println("Insira o genero do DVD pelo qual deseja buscar: ");
@@ -166,8 +119,8 @@ public class Item {
 			case 3:
 				System.out.println("Insira o ID do DVD pelo qual deseja buscar: ");
 				String id = sc.nextLine();
-				//itemConsutado=PostgreDAO.consulta("DVD", "ID", id);
-				//validaConsultaDVD(item);
+				itemConsultado = dDAO.findByID(id);
+				validaConsultaDVD(itemConsultado);
 				break;
 			case 4:
 				System.out.println("Insira o ano do DVD pelo qual deseja buscar: ");
@@ -185,11 +138,11 @@ public class Item {
 				System.out.println("Por favor, insira uma uma opção válida");
 				filtrarOpcoesConsultaDVD();
 		}
-		
+		return;
 	}
 	
-	private void validaConsultaLivro(Livro itemAReservar) {
-		System.out.println("Confira os dados do item que você está prestes a reservar:");
+	private static void validaConsultaLivro(Livro itemAReservar) {
+		System.out.println("Confira os dados do item: ");
 		System.out.println("Título: "+itemAReservar.get_nome());
 		System.out.println("Autor: "+itemAReservar.get_autor());
 		System.out.println("Gênero: "+itemAReservar.get_genero());
@@ -197,7 +150,7 @@ public class Item {
 		System.out.println("Número de Identificação: "+itemAReservar.get_id());
 		System.out.println("Número de Exemplares: "+itemAReservar.get_numExemplares());
 		System.out.println("Número de Exemplares disponíveis: "+itemAReservar.get_exemplaresDisponiveis());
-		System.out.println("Deseja prosseguir? S/N");
+		System.out.println("Deseja reservar? S/N");
 		Scanner sc = new Scanner(System.in);
 		String resposta=sc.nextLine();
 		if (resposta=="S"){
@@ -211,25 +164,42 @@ public class Item {
 				Sistema.filtarOpcao(opcao);
 			}
 		} else {
-			
+			Consultar();
 		}
 	}
 	
-	private void validaConsultaDVD(DVD itemAReservar) {
-		System.out.println("Confira os dados do item que você está prestes a reservar:");
+	private static void validaConsultaDVD(DVD itemAReservar) {
+		System.out.println("Confira os dados do item:");
 		System.out.println("Título: "+itemAReservar.get_nome());
 		System.out.println("Diretor: "+itemAReservar.get_diretor());
 		System.out.println("Ano: "+itemAReservar.get_ano());
-		System.out.println("Tipo: "+itemAReservar.get_tipo());
 		System.out.println("Gênero: "+itemAReservar.get_genero());
 		System.out.println("Número de Identificação: "+itemAReservar.get_id());
 		System.out.println("Número de Exemplares: "+itemAReservar.get_numExemplares());
 		System.out.println("Número de Exemplares disponíveis: "+itemAReservar.get_exemplaresDisponiveis());
+		System.out.println("Deseja reservar? S/N");
+		Scanner sc = new Scanner(System.in);
+		String resposta=sc.nextLine();
+		if (resposta=="S"){
+			try{
+				Reservar(itemAReservar);
+			} catch (Exception e) {
+				System.out.println("Reserva mal sucedida!");
+				System.out.println("Deseja: 1-Consultar, 2-Reservar, 3-Devolver outro livro, ou 4-Sair");
+				int opcao= sc.nextInt();
+				
+				Sistema.filtarOpcao(opcao);
+			}
+		} else {
+			Consultar();
+		}
 	}
 	
 	public static void Reservar(Item e) throws Exception {
-		if (e._exemplaresDisponiveis > 0) {
-			_exemplaresDisponiveis--;
+		int exemplaresDisponiveis = e.get_exemplaresDisponiveis();
+		if (exemplaresDisponiveis > 0) {
+			exemplaresDisponiveis--;
+			e.set_exemplaresDisponiveis(exemplaresDisponiveis);
 			System.out.println("O item está reservado! Deseja consultar ou reservar outro item? S/N");
 			Scanner sc = new Scanner(System.in);
 			String resposta= sc.nextLine();
@@ -239,7 +209,8 @@ public class Item {
 				return;
 			}
 			if (resposta=="N") {
-					System.out.println("Dirija-se ao balcão para validar e retirar o item.");
+				System.out.println("Dirija-se ao balcão para validar e retirar o item.");
+				return;
 			}
 		} else throw new indisponibilidadeException("O item não tem exemplares disponíveis.");
 		
@@ -247,7 +218,25 @@ public class Item {
 	
 	public static void Devolver(Item e) {
 		System.out.println("Processo de Devolução iniciado.");
-		e._exemplaresDisponiveis++;
+		int exemplaresDisponiveis = e.get_exemplaresDisponiveis();
+		exemplaresDisponiveis++;
+		e.set_exemplaresDisponiveis(exemplaresDisponiveis);
 		System.out.println("Dirija-se ao balcão para entregar o item e validar sua devolução.");
+	}
+	
+	public static void InicializaItens() {
+		
+		Livro l1 = new Livro("Livro", "id", "Fortaleza Digital", "Dan Brown", "Ficção", "Sextante", 5, 3);
+		Livro l2 = new Livro("Livro", "id", "Anjos e Demônios", "Dan Brown", "Ficção", "Sextante", 5, 5);
+		Livro l3 = new Livro("Livro", "id", "O Código Da Vinci", "Dan Brown", "Ficção", "Sextante", 5, 1);	
+		Livro l4 = new Livro("Livro", "id", "O Guia do Mochileiro das Galáxias", "Douglas  Adams", "Comédia", "Arqueiro", 5, 2);
+		Livro l5 = new Livro("Livro", "id", "O Senhor dos Anéis", "J.R.R. Tolkien", "Fantasia", "Martins Fontes", 5, 3);
+		
+		DVD d1 = new DVD("DVD", "id", "O Todo Poderoso", "Tom Shadyac", "Comédia", "2003", 5, 5);
+		DVD d2 = new DVD("DVD", "id", "Kill Bill", "Quentin Tarantino", "Ação", "2003", 5, 1);
+		DVD d3 = new DVD("DVD", "id", "Inferno", "Ron Howard", "Mistério", "2016", 5, 4);
+		DVD d4 = new DVD("DVD", "id", "2001: Uma Odisséia no espaço", "Stanley Kubric", "Ficção", "1968", 5, 2);
+		DVD d5 = new DVD("DVD", "id", "Click", "Frank Coraci", "Comédia", "2006", 5, 0);
+		
 	}
 }

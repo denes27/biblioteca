@@ -7,13 +7,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import entitys.DVD;
-import entitys.Livro;
 
 public class DVDDao {
 
-	public void insertDVD(DVD dvd) {
+	public void insert(DVD dvd) {
 		EntityManagerFactory factory = Persistence
-				.createEntityManagerFactory("AcervoDB");
+				.createEntityManagerFactory("postgre");
 		EntityManager manager = factory.createEntityManager();
 		try {
 			manager.getTransaction().begin();
@@ -27,9 +26,9 @@ public class DVDDao {
 		factory.close();
 	}
 	
-	public void removeDVD(DVD dvd) {
+	public void remove(DVD dvd) {
 		EntityManagerFactory factory = Persistence
-				.createEntityManagerFactory("AcervoDB");
+				.createEntityManagerFactory("postgre");
 
 		EntityManager manager = factory.createEntityManager();
 
@@ -44,5 +43,27 @@ public class DVDDao {
 		}
 		manager.close();
 		factory.close();
+	}
+	
+	public DVD findByID(String id) {
+		EntityManagerFactory factory = Persistence
+				.createEntityManagerFactory("postgre");
+		EntityManager manager = factory.createEntityManager();
+		DVD dvd = (DVD) manager.createQuery(
+				"select dvd from DVD dvd where id = '" + id + "'").getSingleResult();
+		manager.close();
+		factory.close();
+		return dvd;
+	}
+	
+	public DVD findByNome(String nome) {
+		EntityManagerFactory factory = Persistence
+				.createEntityManagerFactory("postgre");
+		EntityManager manager = factory.createEntityManager();
+		DVD dvd = (DVD) manager.createQuery(
+				"select dvd from DVD dvd where nome = '" + nome + "'").getSingleResult();
+		manager.close();
+		factory.close();
+		return dvd;
 	}
 }

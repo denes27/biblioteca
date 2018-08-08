@@ -1,16 +1,15 @@
 package entitys;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.Inheritance;
+import javax.persistence.Column;
 
 @Entity
-@Table(name="AcervoDB")
+@Inheritance
 
-public class AcervoDB {
-	
+public class Item {
 	@Id
 	@GeneratedValue
 	private String _id;
@@ -24,64 +23,18 @@ public class AcervoDB {
 	private int _numExemplares;
 	@Column (name="dispExempl")
 	private int _exemplaresDisponiveis;
-	@Column (name="editora")
-	private String _editora;
-	@Column (name="ano")
-	private String _ano;
-	@Column (name="diretor")
-	private String _diretor;
-	@Column (name="autor")
-	private String _autor;
-
-	public AcervoDB() {
+	
+	public Item() {
 		
 	}
 	
-	public AcervoDB(String tipo, String id, String nome, String diretor, String autor, String genero,
-					String editora, String ano, int numExemplares, int exemplaresDisponiveis) {
-		this._ano=ano;
+	public Item(String tipo, String id, String nome, String genero, int numExemplares, int exemplaresDisponiveis) {
 		this._tipo=tipo;
 		this._id=id;
 		this._nome=nome;
-		this._diretor=diretor;
 		this._genero=genero;
 		this._numExemplares=numExemplares;
 		this._exemplaresDisponiveis= exemplaresDisponiveis;
-		this._autor=autor;
-		this._editora=editora;
-	}
-
- 	public String get_autor() {
-		return _autor;
-	}
-	
-	public void set_autor(String _autor) {
-		this._autor = _autor;
-	}
-	
-	
-	public String get_editora() {
-		return _editora;
-	}
-	
-	public void set_editora(String _editora) {
-		this._editora = _editora;
-	}
-	
-	public String get_ano() {
-		return _ano;
-	}
-	
-	public void set_ano(String _ano) {
-		this._ano = _ano;
-	}
-	
-	public String get_diretor() {
-		return _diretor;
-	}
-	
-	public void set_diretor(String _diretor) {
-		this._diretor = _diretor;
 	}
 	
 	public String get_tipo() {
@@ -131,7 +84,4 @@ public class AcervoDB {
 	public int get_exemplaresDisponiveis() {
 		return _exemplaresDisponiveis;
 	}
-
-	
-
 }

@@ -3,6 +3,11 @@ package aplicacao;
 import java.io.IOException;
 import java.util.Scanner;
 
+import dao.LivroDao;
+import entitys.Item;
+import dao.DVDDao;
+
+
 public class Sistema {
 
 		public static void Inicializacao(){
@@ -10,7 +15,7 @@ public class Sistema {
 			
 			System.out.println("Bem-vindo(a) ao sistema da Biblioteca!");
 			System.out.println("Você deseja: 1-Consultar, 2-Reservar, 3-Devolver, 4-Sair?");
-			//System.out.println("Fazer login como 'Usuário'(1) ou 'Funcionário'(2)?");
+			
 			int opcao= sc.nextInt();
 			
 			filtarOpcao(opcao);
@@ -18,17 +23,35 @@ public class Sistema {
 		
 		public static void filtarOpcao(int opcao) {
 			
+			Scanner sc = new Scanner(System.in);
 			Item item = new Item();
+			LivroDao lDAO = new LivroDao();
+			DVDDao dDAO = new DVDDao();
 			
 			switch(opcao) {
 			case 1:
-				Item.Consultar();
+				GerenciaItem.Consultar();
 				break;
 			case 2:
+				System.out.println("Deseja Reservar 1-Livro, ou 2-DVD?");
+				int resposta1= sc.nextInt();
+				
+				System.out.println("Insira o ID do Item que vocẽ deseja reservar: ");
+				String id = sc.nextLine();
+				
+				switch(resposta1) {
+				case 1:
+					item = lDAO.findByID(id);
+					break;
+				case 2:
+					item = dDAO.findByID(id);
+					break;
+				}
+				
 				try {
-				Item.Reservar(item);
+				GerenciaItem.Reservar(item);
 				} catch (Exception e){
-					Scanner sc = new Scanner(System.in);
+					
 					System.out.println("Reserva mal sucedida!");
 					System.out.println("Deseja: 1-Consultar, 2-Reservar, 3-Devolver outro livro, ou 4-Sair");
 					int opcao2= sc.nextInt();
@@ -37,44 +60,31 @@ public class Sistema {
 				}
 				break;
 			case 3:
-				Item.Devolver(item);
+				System.out.println("Deseja Devolver um 1-Livro, ou 2-DVD?");
+				int resposta2= sc.nextInt();
+				
+				System.out.println("Insira o ID do Item que você deseja devolver: ");
+				String id2 = sc.nextLine();
+				
+				switch(resposta2) {
+				case 1:
+					item = lDAO.findByID(id2);
+					break;
+				case 2:
+					item = dDAO.findByID(id2);
+					break;
+				}
+				GerenciaItem.Devolver(item);
 				break;
 			case 4:
 				System.out.println("Agradecemos a preferência! Tenha um bom dia!");
+				sc.close();
 				return;
 			default: 
 				System.out.println("Opção Inválida! Por favor, insira uma opção válida: ");
-				Scanner sc = new Scanner(System.in);
 				filtarOpcao(sc.nextInt());
 				break;
 			}
 		}
 
-		private void opcoesFuncionário() { }
-
-		private void opcoesUsuario() {
-			System.out.println("Usuário já possui cadastro? S/N");
-			Scanner sc = new Scanner(System.in);
-			String resposta= sc.nextLine();
-			if(resposta=="S"){
-				Usuario usuario = new Usuario();
-				//try{
-				System.out.println("Insira Usuário:");
-				String login=sc.nextLine();
-				System.out.println("Insira a Senha:");
-				String senha=sc.nextLine();
-				//Usuario.validacao(login, senha);
-				//} catch(IOException e) {
-					//System.out.println("Usuário inexistente ou inválido!");
-					//opcoesUsuario();
-				//}
-				
-			}
-			if (resposta=="N") {
-					System.out.println("É necessário cadastrar-se para realizar Reservas.");
-					//Usuario.casdastrar();					
-			}
-			sc.close();
-			
-		}
 }
